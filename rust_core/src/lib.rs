@@ -1,3 +1,4 @@
+pub mod api;
 pub mod sequencer;
 pub mod synth;
 pub mod export;

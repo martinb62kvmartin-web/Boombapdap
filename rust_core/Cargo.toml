@@ -7,6 +7,8 @@ edition = "2021"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [dependencies]
+flutter_rust_bridge = "2.0.0"
+anyhow = "1.0"
 # Добавьте необходимые зависимости, например, для обработки аудио
 # rodio = "0.17"
 # hound = "3.5"
