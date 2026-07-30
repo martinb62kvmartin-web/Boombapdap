@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_flutter/features/sequencer_screen.dart';
 
 void main() {
   runApp(const BoombapdapApp());
@@ -16,7 +17,7 @@ class BoombapdapApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const SequencerScreen(),
     );
   }
 }
