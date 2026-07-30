@@ -24,25 +24,33 @@ impl Oscillator {
 }
 
 pub struct Voice {
+    pub key: u8,
     oscillator: Oscillator,
     adsr: Adsr,
     filter: LowPassFilter,
+    pub velocity: f32,
 }
 
 impl Voice {
-    pub fn new(frequency: f32, sample_rate: f32) -> Self {
+    pub fn new(key: u8, frequency: f32, sample_rate: f32, velocity: f32) -> Self {
         Self {
+            key,
             oscillator: Oscillator::new(frequency, sample_rate),
             adsr: Adsr::new(0.01, 0.1, 0.5, 0.2, sample_rate),
-            filter: LowPassFilter::new(0.1, 0.1),
+            filter: LowPassFilter::new(0.2, 0.1),
+            velocity,
         }
     }
 
     pub fn next_sample(&mut self) -> f32 {
         let osc_sample = self.oscillator.next_sample();
         let adsr_level = self.adsr.tick();
-        let filtered_sample = self.filter.process(osc_sample * adsr_level);
+        let filtered_sample = self.filter.process(osc_sample * adsr_level * self.velocity);
         filtered_sample
+    }
+
+    pub fn note_off(&mut self) {
+        self.adsr.note_off();
     }
 
     pub fn is_finished(&self) -> bool {
@@ -63,8 +71,23 @@ impl Synth {
         }
     }
 
-    pub fn trigger_note(&mut self, frequency: f32) {
-        self.voices.push(Voice::new(frequency, self.sample_rate));
+    fn midi_to_freq(key: u8) -> f32 {
+        440.0 * 2.0f32.powf((key as f32 - 69.0) / 12.0)
+    }
+
+    pub fn note_on(&mut self, key: u8, velocity: f32) {
+        // Останавливаем старый голос с той же нотой, если он есть
+        self.note_off(key);
+        let freq = Self::midi_to_freq(key);
+        self.voices.push(Voice::new(key, freq, self.sample_rate, velocity));
+    }
+
+    pub fn note_off(&mut self, key: u8) {
+        for voice in self.voices.iter_mut() {
+            if voice.key == key {
+                voice.note_off();
+            }
+        }
     }
 
     pub fn process_buffer(&mut self, buffer: &mut [f32]) {
@@ -75,8 +98,6 @@ impl Synth {
             }
             *sample = mixed_sample * 0.1;
         }
-        
-        // Очистка завершенных голосов
         self.voices.retain(|v| !v.is_finished());
     }
 }
