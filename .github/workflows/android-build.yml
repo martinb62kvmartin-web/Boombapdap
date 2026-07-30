@@ -29,12 +29,20 @@ jobs:
           targets: aarch64-linux-android
 
       - name: Install flutter_rust_bridge_codegen
-        run: cargo install flutter_rust_bridge_codegen --version 2.0.0
+        run: |
+          # Используем binstall для мгновенной установки бинарника вместо долгой компиляции
+          curl -L https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-unknown-linux-musl.tgz | tar -xvzf -
+          ./cargo-binstall -y flutter_rust_bridge_codegen@2.0.0
 
       - name: Prepare Android NDK
         uses: nttld/setup-ndk@v1
         with:
           ndk-version: r25c
+
+      - name: Flutter Pub Get
+        run: |
+          cd app_flutter
+          flutter pub get
 
       - name: Build Rust Bridge
         run: |
@@ -44,7 +52,8 @@ jobs:
       - name: Build APK
         run: |
           cd app_flutter
-          flutter build apk --release
+          # Собираем только для arm64, чтобы ускорить процесс и избежать ошибок линковки других архитектур
+          flutter build apk --release --target-platform android-arm64
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
