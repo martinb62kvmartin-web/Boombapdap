@@ -81,6 +81,25 @@ class _SampleEditorState extends State<SampleEditor> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+            _buildSectionTitle('Input & Tools'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {}, // Record
+                  icon: const Icon(Icons.mic, color: Colors.redAccent),
+                  label: const Text('Live Record'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {}, // Video Import
+                  icon: const Icon(Icons.video_library, color: Colors.blueAccent),
+                  label: const Text('Import Video'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                ),
+              ],
             )
           ],
         ),

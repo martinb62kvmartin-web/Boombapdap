@@ -8,6 +8,7 @@ pub mod effects;
 pub mod mixer;
 pub mod automation;
 pub mod midi;
+pub mod recorder;
 pub mod export;
 pub mod ffi;
 

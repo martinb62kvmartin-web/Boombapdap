@@ -4,6 +4,7 @@ import 'package:app_flutter/features/sample_editor.dart';
 import 'package:app_flutter/features/pads_screen.dart';
 import 'package:app_flutter/features/mixer_screen.dart';
 import 'package:app_flutter/features/piano_roll.dart';
+import 'package:app_flutter/features/settings_screen.dart';
 
 class SequencerScreen extends StatefulWidget {
   const SequencerScreen({super.key});
@@ -70,6 +71,10 @@ class _SequencerScreenState extends State<SequencerScreen> {
           IconButton(
             icon: const Icon(Icons.music_note, color: Colors.deepPurpleAccent),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PianoRoll())),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings, color: Colors.white70),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen())),
           ),
           Center(child: Text('BPM: ${bpm.round()}  ')),
         ],

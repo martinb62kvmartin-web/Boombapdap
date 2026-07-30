@@ -3,6 +3,7 @@ use crate::synth::Synth;
 use crate::mixer::Mixer;
 use crate::automation::AutomationClip;
 use crate::midi::MidiTrack;
+use crate::recorder::Recorder;
 use lazy_static::lazy_static;
 use parking_lot::Mutex;
 
@@ -12,6 +13,7 @@ lazy_static! {
     static ref MIXER: Mutex<Mixer> = Mutex::new(Mixer::new(6, 44100));
     static ref AUTOMATIONS: Mutex<Vec<AutomationClip>> = Mutex::new(Vec::new());
     static ref MIDI_TRACK: Mutex<MidiTrack> = Mutex::new(MidiTrack::new());
+    static ref RECORDER: Mutex<Recorder> = Mutex::new(Recorder::new());
 }
 
 pub fn init_app() -> String {
