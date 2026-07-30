@@ -1,0 +1,53 @@
+name: Android Build
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch: # Позволяет запускать сборку вручную
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Install flutter_rust_bridge_codegen
+        run: cargo install flutter_rust_bridge_codegen --version 2.0.0
+
+      - name: Prepare Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+
+      - name: Build Rust Bridge
+        run: |
+          chmod +x generate_bridge.sh
+          ./generate_bridge.sh
+
+      - name: Build APK
+        run: |
+          cd app_flutter
+          flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: boombapdap-apk
+          path: app_flutter/build/app/outputs/flutter-apk/app-release.apk
