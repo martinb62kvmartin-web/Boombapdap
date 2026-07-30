@@ -1,0 +1,12 @@
+[package]
+name = "rust_core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[dependencies]
+# Добавьте необходимые зависимости, например, для обработки аудио
+# rodio = "0.17"
+# hound = "3.5"
