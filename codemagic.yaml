@@ -1,0 +1,36 @@
+workflows:
+  android-build:
+    name: Boombapdap Android Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      groups:
+        - ndk_config
+      flutter: stable
+      xcode: latest
+      java: 17
+    scripts:
+      - name: Set up Rust and Flutter Rust Bridge
+        script: |
+          # Установка Rust
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source $HOME/.cargo/env
+          rustup target add aarch64-linux-android
+          
+          # Установка генератора моста
+          cargo install flutter_rust_bridge_codegen --version 2.0.0
+          
+          # Генерация связующего кода
+          chmod +x generate_bridge.sh
+          ./generate_bridge.sh
+      - name: Build Android APK
+        script: |
+          cd app_flutter
+          flutter packages pub get
+          flutter build apk --release --target-platform android-arm64
+    artifacts:
+      - app_flutter/build/app/outputs/flutter-apk/*.apk
+    publishing:
+      email:
+        recipients:
+          - ${{ YOUR_EMAIL_HERE }} # Опционально: введите свой email в настройках Codemagic
