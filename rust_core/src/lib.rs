@@ -6,6 +6,7 @@ pub mod sample;
 pub mod filter;
 pub mod effects;
 pub mod mixer;
+pub mod automation;
 pub mod export;
 pub mod ffi;
 

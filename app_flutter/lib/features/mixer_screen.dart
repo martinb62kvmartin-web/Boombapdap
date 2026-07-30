@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_flutter/features/automation_editor.dart';
 
 class MixerScreen extends StatefulWidget {
   const MixerScreen({super.key});
@@ -49,8 +50,18 @@ class _MixerScreenState extends State<MixerScreen> {
       child: Column(
         children: [
           const SizedBox(height: 10),
-          Text(isMaster ? 'MASTER' : 'CH ${index + 1}', 
-               style: TextStyle(color: isMaster ? Colors.blueAccent : Colors.white, fontWeight: FontWeight.bold)),
+          InkWell(
+            onLongPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AutomationEditor(paramName: isMaster ? 'Master Volume' : 'CH ${index + 1} Volume'),
+                ),
+              );
+            },
+            child: Text(isMaster ? 'MASTER' : 'CH ${index + 1}', 
+                 style: TextStyle(color: isMaster ? Colors.blueAccent : Colors.white, fontWeight: FontWeight.bold)),
+          ),
           const Spacer(),
           // Fader
           Expanded(
