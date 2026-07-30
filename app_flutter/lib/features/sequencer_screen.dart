@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:app_flutter/features/sample_editor.dart';
+import 'package:app_flutter/features/pads_screen.dart';
+import 'package:app_flutter/features/mixer_screen.dart';
 
 class SequencerScreen extends StatefulWidget {
   const SequencerScreen({super.key});
@@ -56,6 +58,14 @@ class _SequencerScreenState extends State<SequencerScreen> {
         title: const Text('BOOMBAPDAP'),
         backgroundColor: Colors.black,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.apps, color: Colors.orangeAccent),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PadsScreen())),
+          ),
+          IconButton(
+            icon: const Icon(Icons.tune, color: Colors.blueAccent),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MixerScreen())),
+          ),
           Center(child: Text('BPM: ${bpm.round()}  ')),
         ],
       ),
