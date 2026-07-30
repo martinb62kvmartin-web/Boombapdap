@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:app_flutter/features/sample_editor.dart';
 
 class SequencerScreen extends StatefulWidget {
   const SequencerScreen({super.key});
@@ -99,7 +100,20 @@ class _SequencerScreenState extends State<SequencerScreen> {
                     children: [
                       SizedBox(
                         width: 80,
-                        child: Text(trackNames[trackIndex], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SampleEditor(trackName: trackNames[trackIndex]),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            trackNames[trackIndex], 
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: SingleChildScrollView(

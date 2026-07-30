@@ -1,6 +1,9 @@
 pub mod api;
 pub mod sequencer;
 pub mod synth;
+pub mod adsr;
+pub mod sample;
+pub mod filter;
 pub mod export;
 pub mod ffi;
 
