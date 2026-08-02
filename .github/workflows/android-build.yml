@@ -31,7 +31,7 @@ jobs:
       - name: Install flutter_rust_bridge_codegen
         run: |
           # Используем binstall для мгновенной установки бинарника вместо долгой компиляции
-          curl -L https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-unknown-linux-musl.tgz | tar -xvzf -
+          curl -L https://github.com | tar -xvzf -
           ./cargo-binstall -y flutter_rust_bridge_codegen@2.0.0
 
       - name: Prepare Android NDK
@@ -39,19 +39,17 @@ jobs:
         with:
           ndk-version: r25c
 
-      - name: Flutter Pub Get
-        run: |
-          cd app_flutter
-          flutter pub get
-
       - name: Build Rust Bridge
         run: |
           chmod +x generate_bridge.sh
           ./generate_bridge.sh
 
-      - name: Build APK
+      - name: Clean and Build APK
         run: |
           cd app_flutter
+          # Сбрасываем старый кэш сборщика, который хранит метаданные v1 embedding
+          flutter clean
+          flutter pub get
           # Собираем только для arm64, чтобы ускорить процесс и избежать ошибок линковки других архитектур
           flutter build apk --release --target-platform android-arm64
 
@@ -60,3 +58,4 @@ jobs:
         with:
           name: boombapdap-apk
           path: app_flutter/build/app/outputs/flutter-apk/app-release.apk
+
