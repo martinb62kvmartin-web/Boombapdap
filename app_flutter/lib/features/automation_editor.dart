@@ -42,22 +42,25 @@ class _AutomationEditorState extends State<AutomationEditor> {
                 border: Border.all(color: Colors.white24),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: GestureDetector(
-                onTapDown: (details) {
-                  final RenderBox box = context.findRenderObject() as RenderBox;
-                  final localPos = details.localPosition;
-                  setState(() {
-                    points.add(AutomationPoint(Offset(
-                      localPos.dx / box.size.width,
-                      localPos.dy / box.size.height,
-                    )));
-                    points.sort((a, b) => a.position.dx.compareTo(b.position.dx));
-                  });
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return GestureDetector(
+                    onTapDown: (details) {
+                      final localPos = details.localPosition;
+                      setState(() {
+                        points.add(AutomationPoint(Offset(
+                          localPos.dx / constraints.maxWidth,
+                          localPos.dy / constraints.maxHeight,
+                        )));
+                        points.sort((a, b) => a.position.dx.compareTo(b.position.dx));
+                      });
+                    },
+                    child: CustomPaint(
+                      painter: AutomationPainter(points),
+                      size: Size(constraints.maxWidth, constraints.maxHeight),
+                    ),
+                  );
                 },
-                child: CustomPaint(
-                  painter: AutomationPainter(points),
-                  size: Size.infinite,
-                ),
               ),
             ),
           ),

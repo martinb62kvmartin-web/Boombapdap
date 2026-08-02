@@ -6,6 +6,7 @@
 
 echo "Generating Flutter Rust Bridge code..."
 
+mkdir -p app_flutter/lib/src/rust
 flutter_rust_bridge_codegen generate \
     --rust-input rust_core/src/api.rs \
     --dart-output app_flutter/lib/src/rust/frb_generated.dart \

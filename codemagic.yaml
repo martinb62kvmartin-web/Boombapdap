@@ -24,7 +24,7 @@ workflows:
       - name: Build Android APK
         script: |
           cd app_flutter
-          flutter packages pub get
+          flutter pub get
           flutter build apk --release --target-platform android-arm64
     artifacts:
       - app_flutter/build/app/outputs/flutter-apk/*.apk

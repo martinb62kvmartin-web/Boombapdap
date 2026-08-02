@@ -24,19 +24,31 @@ impl Adsr {
     }
 
     pub fn tick(&mut self) -> f32 {
-        let level = if !is_releasing {
+        let level = if !self.is_releasing {
             if self.time < self.attack {
-                self.time / self.attack
+                if self.attack > 0.0 {
+                    self.time / self.attack
+                } else {
+                    1.0
+                }
             } else if self.time < self.attack + self.decay {
                 let decay_time = self.time - self.attack;
-                1.0 - (decay_time / self.decay) * (1.0 - self.sustain)
+                if self.decay > 0.0 {
+                    1.0 - (decay_time / self.decay) * (1.0 - self.sustain)
+                } else {
+                    self.sustain
+                }
             } else {
                 self.sustain
             }
         } else {
             let release_time = self.time - self.release_start_time;
             if release_time < self.release {
-                self.sustain * (1.0 - release_time / self.release)
+                if self.release > 0.0 {
+                    self.sustain * (1.0 - release_time / self.release)
+                } else {
+                    0.0
+                }
             } else {
                 0.0
             }

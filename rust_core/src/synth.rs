@@ -82,6 +82,11 @@ impl Synth {
         self.voices.push(Voice::new(key, freq, self.sample_rate, velocity));
     }
 
+    pub fn trigger_note(&mut self, frequency: f32) {
+        let key = 69;
+        self.voices.push(Voice::new(key, frequency, self.sample_rate, 0.8));
+    }
+
     pub fn note_off(&mut self, key: u8) {
         for voice in self.voices.iter_mut() {
             if voice.key == key {

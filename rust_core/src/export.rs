@@ -1,5 +1,3 @@
-use crate::sample::Sample;
-
 pub struct ExportSettings {
     pub sample_rate: u32,
     pub resampling_points: u32, // 64 to 512
